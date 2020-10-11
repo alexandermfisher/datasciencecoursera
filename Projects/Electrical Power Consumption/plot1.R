@@ -1,6 +1,4 @@
 # load data into workspace:
-setwd(paste0("~/Documents/R_Programming/",
-      "Data_Science_Specialisation_Course_in_R/draft_material/Assesments/Electrical Power Consumption"))
 dt <- data.table::fread(input = "./data/household_power_consumption.txt", na.strings="?")
 
 # Format Date and Global_active_power cols:

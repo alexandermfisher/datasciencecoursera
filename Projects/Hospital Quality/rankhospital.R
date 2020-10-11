@@ -1,6 +1,5 @@
 rankhospital <- function(state, outcome, rank = "best"){
         ## Read outcome data
-        setwd("/Users/alexandermfisher/Documents/R_Programming/Data_Science_Specialisation_Course_in_R/draft_material/Assesments/Hospital Quality")
         data <- read.csv("./data/outcome-of-care-measures.csv", colClasses = "character",header=TRUE)
         df <- as.data.frame(cbind(data[, 2],   # hospital
                                   data[, 7],   # state
