@@ -5,9 +5,7 @@ date: "11/10/2020"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
+
 
 ## Project 1: Air Pollution
 
@@ -21,8 +19,8 @@ The file will need to be unzipped. The data (CSV) files should be stored in a di
 
 In this part a function called pollutantmean.R will be created. It will, as the name suggests, calculate the mean value for a given specified pollutant for the given id values passed. 
 
-```{r}
 
+```r
 pollutantmean <- function(directory, pollutant, id = 1:332){
         myfiles <- list.files(path = directory, pattern = ".csv")
 
@@ -34,15 +32,14 @@ pollutantmean <- function(directory, pollutant, id = 1:332){
         
         mean(x,na.rm=TRUE)
 }
-
 ```
 
 ### Part 2:
 
 In this part a function called complete.R will be created. It will calculate the number of complete observations in each file (id) and return a data table displaying that info. I complete observation means both 'sulfate' and 'nitrate' ahave been recorded for that instance, i.e. a full row. See function below. 
 
-```{r}
 
+```r
 complete <- function(directory, id = 1:332){
         myfiles <- list.files(path = directory, pattern = ".csv")
         
@@ -55,14 +52,14 @@ complete <- function(directory, id = 1:332){
         }
         results
 }
-
 ```
 
 ### Part 3:
 
 In this part a function called corr.R will be created. It will calculate the correlation, using the r inbuilt function cor(), between 'sulfate' and 'nitrate' for datasets (i.e. each csv file in specdata) that meets a given threshold for number of complete observations.  
 
-```{r}
+
+```r
 corr <- function(directory, threshold = 0){
         myfiles <- list.files(path = directory, pattern = ".csv")
         
@@ -82,7 +79,6 @@ corr <- function(directory, threshold = 0){
         cor_results
 
 }
-
 ```
 
 
