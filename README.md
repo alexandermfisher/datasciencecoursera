@@ -1,5 +1,5 @@
 # Data Science Specialisation | John Hopkins Coursera
-<hr/>
+
 
 *author: Alexander M Fisher*
 
