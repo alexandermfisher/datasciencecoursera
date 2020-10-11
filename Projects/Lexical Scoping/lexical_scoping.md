@@ -1,10 +1,3 @@
----
-title: "Lexical Scoping"
-author: "Alexander Fisher"
-date: "11/10/2020"
-output: html_document
----
-
 ## Project 2: Lexical Scoping
 
 This is the second project in the R Prgramming course. It explores lexical scoping in R by creating two functions. The two functions can be found in makeCacheMatrix.R. The goal is two write a pair of functions that cache the inverse of a matrix. 
@@ -12,7 +5,8 @@ This is the second project in the R Prgramming course. It explores lexical scopi
 ### Function 1:
 
 makeCacheMatrix: This function creates a special "matrix" object that can cache its inverse.
-```{R}
+
+```r
 makeCacheMatrix <- function(x=matrix()){
         inv <- NULL
         set <- function(y){
@@ -30,7 +24,8 @@ makeCacheMatrix <- function(x=matrix()){
 
 cacheSolve: This function computes the inverse of the special "matrix" returned by makeCacheMatrix above. If the inverse has already been calculated (and the matrix has not changed), then the cachesolve should retrieve the inverse from the cache.
 
-```{R}
+
+```r
 cacheSolve <- function(x, ...){
         inv <- x$getInverse()
         if (!is.null(inv)){

@@ -1,12 +1,3 @@
----
-title: "Air Pollution"
-author: "Alexander Fisher"
-date: "11/10/2020"
-output: html_document
----
-
-
-
 ## Project 1: Air Pollution
 
 This is the first project in the R Programming course. It will involve building three functions that interact and work on the given sepcdata set that has been uploaded into this repo. The data set can also be downloaded via the link provided in the coursera website that is [specdata.zip](https://d396qusza40orc.cloudfront.net/rprog%2Fdata%2Fspecdata.zip) [2.4MB]. 
