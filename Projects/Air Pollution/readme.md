@@ -1,12 +1,12 @@
 ## Project 1: Air Pollution
 
-<hr/>
-
 This is the first project in the R Programming course. It will involve building three functions that interact and work on the given sepcdata set that has been uploaded into this repo. The data set can also be downloaded via the link provided in the coursera website that is [specdata.zip](https://d396qusza40orc.cloudfront.net/rprog%2Fdata%2Fspecdata.zip) [2.4MB]. 
 
 The zip file contains 332 comma-separated-value (CSV) files containing pollution monitoring data for fine particulate matter (PM) air pollution at 332 locations in the United States. 
 
 The file will need to be unzipped. The data (CSV) files should be stored in a directory called 'specdata'. 
+
+<hr/>
 
 ### Part 1:
 
