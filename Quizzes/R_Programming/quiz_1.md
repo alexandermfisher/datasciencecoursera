@@ -32,9 +32,12 @@ If I execute the expression x \<- 4 in R, what is the class of the object 'x' as
 
 ```r
 x <- 4
-> class(x)
-[1] "numeric"
+class(x)
 ```
+    ## [1] "numeric"
+
+why this not work!    
+
 
 
 
