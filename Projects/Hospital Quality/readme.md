@@ -23,7 +23,7 @@ outcome[, 11] <- suppressWarnings(as.numeric(outcome[, 11]))
 hist(outcome[, 11],xlab= "Deaths", main = "Hospital 30-Day Death (Mortality) Rates from Heart Attack")
 ```
 
-![plot of chunk unnamed-chunk-1](figure/outcome_hist.png)
+![Hist_Outcomes_Plot](outcome_hist.png)
 
 ### Part 2 - Finding the best hospital in a state:
 
