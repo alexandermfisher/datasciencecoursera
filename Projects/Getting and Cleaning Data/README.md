@@ -16,7 +16,7 @@ This is the course project for the Getting and Cleaning Data module. Included in
 
 ##### Files:
 
-- `CodeBook.md`: a code book that describes the variables, the data, and any transformations or work that you performed to clean up the data
+- `CodeBook.md`: a code book that describes the variables, the data, and the transformations or work performed to clean up the data
 - `run_analysis.R`: script for performing the analysis. The script achieves the follwoing,
   * If the data is not present in working directory it will dowload file and unzip file ready for analysis.
   * Loads the features and activity data.

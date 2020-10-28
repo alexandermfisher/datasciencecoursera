@@ -40,7 +40,6 @@ measurement_names <- gsub('[()]', '', measurement_names)
 colnames(data) <- c("subject_id", "activity", measurement_names)
 
 # rename column names more descriptively:
-
 colnames(data) <- gsub("-mean", "Mean", colnames(data))
 colnames(data) <- gsub("-std", "STD", colnames(data))
 colnames(data) <- gsub("^t", "Time", colnames(data))

@@ -5,7 +5,7 @@ Coursework: Getting and Cleaning Data Project
 
 *********
 
-This code book describes the processes (in run_anaylsis.R) involved in transforming the initial data set into the resulting tidy_data.txt as per the instructions of the coursework. The variabls created in run_anaysis.R are also listed and explained in the code book. Lastly this code book also lists and explains identifiers and column names in the tidy_data.txt. 
+This code book describes the processes (in run_anaylsis.R) involved in transforming the initial data set into the resulting tidy_data.txt as per the instructions of the coursework. The variables created in run_anaysis.R are also listed and explained in the code book. Lastly this code book also lists and explains identifiers and column names in the tidy_data.txt. 
 
 *********
 
