@@ -1,4 +1,4 @@
-### Exploratory Data Analysis Project 1 - Electrical Power Consumption:
+### Exploratory Data Analysis Project 1 - Electrical Power Consumption: 
 
 *Author: Alexander M Fisher*  
 
