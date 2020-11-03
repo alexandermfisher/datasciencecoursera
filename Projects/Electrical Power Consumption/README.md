@@ -1,4 +1,4 @@
-### Getting and Cleaning Data Course Project:
+### Exploratory Data Analysis Project 1 - Electrical Power Consumption:
 
 *Author: Alexander M Fisher*  
 
