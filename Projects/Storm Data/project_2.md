@@ -1,10 +1,3 @@
----
-output: 
-  html_document:
-    keep_md: true
----
-
-
 ## Reproducible Research - Peer Assessment 2:
 (rename title for rpubs submission to something more approriate and add more detail on analysis in synopsis)
 

@@ -11,7 +11,7 @@ This is the second course project for the Reproducible Research module a part of
 #### Data:
 
 - [Storm Data Link](https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2) [47Mb]
-- [Documentation](https://d396qusza40orc.cloudfront.net/repdata%2Fpeer2_doc%2Fpd01016005curr.pdf)
+- [Documentation](https://d396qusza40orc.cloudfront.net/repdata%2Fpeer2_doc%2Fpd01016005curr.pdf) [919Kb]
 
 **********
 
