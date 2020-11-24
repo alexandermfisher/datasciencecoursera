@@ -2,9 +2,9 @@
 
 *Author: Alexander M Fisher*  
 
- **********
+**********
  
-This is the course project for the Statistical Inference module a part of the Coursera Data Science Specialization. Both part 1 and 2 have been included. In this repository is a script analtsis.R which includes all the code used throughout the Rmarkdwon files in a single self contained R file. The final Rmd, pdf, and html course_project_part_(1 & 2) files are include. This is all of the code, and final analysis reports required for this project.
+This is the course project for the Statistical Inference module a part of the Coursera Data Science Specialization. Both part 1 and 2 have been included. In this repository is a script analysis.R which includes all the code used throughout the Rmarkdwon files in a single self contained R file. The final Rmd, pdf, and html course_project_part_(1 & 2) files are included. This is all of the code, and final analysis reports required for this project.
 
 **********
 
