@@ -1,0 +1,126 @@
+---
+title: "Practical Machine Learning Project"
+author: "Alexander M Fisher"
+date: "November 26 2020"
+output:
+  pdf_document: default
+  html_document:
+    keep_md: false
+    theme: readable
+---
+
+### Executive Summary:
+
+In this study we will generate a prediction model using the data from Human Activity Recognition Project at [Groupware](http://groupware.les.inf.puc-rio.br/har). Using the data from accelerometers on the belt, forearm, arm, and dumbell of 6 participants, a model will be trained to predict the manner in which they did the exercise. Then it will be applied on the test data to predict the manner of exercise under 20 different test cases. For more information on the data go to [Groupware](http://groupware.les.inf.puc-rio.br/har) (see the section on the Weight Lifting Exercise Dataset). 
+
+
+### Load and Prepare Data:
+
+The first step is to, if not already done, download the training and testing sets, and then load them into R. A preliminary "clean up" will also be preformed. 
+The main steps taken in the code chunk below are, 
+
+- download and load data into R
+- remove any variable (i.e column) if it isnt 95% complete, that is to say not full of NAs
+- remove first 7 columns which are related to identification, not quantitative data.
+- split training set into training and validation by 0.7 split. 
+
+```{r}
+test_data_file <- "pml-testing.csv" ; train_data_file <- "pml-training.csv"
+test_data_url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+train_data_url <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+if (!file.exists(test_data_file)){
+        download.file(test_data_url, destfile=test_data_file, method="curl")
+}
+if (!file.exists(train_data_file)){
+        download.file(train_data_url, destfile=train_data_file, method="curl")
+}
+
+training_data <- read.csv("pml-training.csv", na.strings= c("NA","","#DIV/0!"))
+testing_data <- read.csv("pml-testing.csv", na.strings= c("NA","","#DIV/0!"))
+training <- training_data[, !colMeans(is.na(training_data)) > 0.95]
+testing <- testing_data[, !colMeans(is.na(training_data)) > 0.95]
+training$classe <- as.factor(training$classe)
+training <- training[, -(1:7)]
+testing <- testing[, -(1:7)]
+suppressMessages(library(caret)); set.seed(222)
+inTrain <- createDataPartition(training$classe, p=0.7, list=FALSE)
+training <- training[inTrain, ]
+validation <- training[-inTrain, ]
+```
+
+This leaves three data sets. A training, validation, and testing set. All have 53 variables or features. Now to do some exploration. Functions `str`, `summary`, `head` can be used to have a look at the data set (I have not printed them out here to conserve page space).
+
+### Exploratory Data Analysis:
+
+This is a quick section making a plot that looks at how the variables are correlated with each other. It can be seen in the resulting graph that there are some variables that are highly correlated with each other (other than the diagonal entries of course which are 1). There are not too many however. PCA may be applied to reduce the feature space, in this analysis as the feature space is relatively small PCA hasn't been applied, it is worth an investigation however, in a deeper analysis. See below the code chunk and resulting graph. 
+
+```{r}
+correlation_matrix <- cor(training[,-ncol(training)])
+corrplot::corrplot(correlation_matrix, method = "color" , type = "upper", tl.cex = 0.5, tl.col = "black")
+```
+
+### Prediction Model Selection:
+
+In this section I will generate three prediction models, namely, a Decision Tree, and Random Forest, and a Generalized Boosted Model. These will be run on the validation set after being trained on the training set, an the best preforming model will be selected to then predict on the test set. I will load the necessary libraries here.
+
+```{r}
+library(caret); library(rpart)
+```
+
+#### Decision Tree:
+
+```{r cache=TRUE}
+model_dt <- rpart(classe~., training)
+predict_dt <- predict(model_dt, validation, type = "class") 
+confusion_dt <- confusionMatrix(predict_dt, validation$classe); confusion_dt
+```
+
+A decision tree has been trained and has predicted the classes from the validation set. I have also got a confusion matrix comparing the truth from the predictions. The accuracy of of this decision tree model on the validation set can be seen to be approx. 75%. Now to move onto the next model. 
+
+#### Random Forest:
+
+```{r cache=TRUE}
+control <- trainControl(method = "cv", number = 3, verboseIter=FALSE)
+model_rf <- train(classe ~ ., data = training, method = "rf", trControl = control, ntree = 50)
+model_rf$finalModel
+```
+
+Here a Random Forest has been trained. The final model has been printed out. Again now I will use the model to predict the classe value for the for each of the validation set entries. A confusion matrix is printed out as well, and it can be seen the accuracy of this random forest model is 100%. 
+
+```{r}
+predict_rf <- predict(model_rf, validation) 
+confusion_rf <- confusionMatrix(predict_rf, validation$classe); confusion_rf
+```
+
+#### Generalised Boosted Model:
+
+This is the final model in this analysis.
+
+```{r cache=TRUE}
+control <- trainControl(method = "repeatedcv", number = 3, repeats = 1, verboseIter = FALSE) 
+model_gbm <- train(classe ~ ., data = training, method = "gbm", trControl = control, verbose = FALSE); model_gbm$finalModel
+```
+
+Again I will use the model to predict the classe values for the validation set and then check the accuracy. The accuracy of this model on the  validation set is approx. 97%.
+
+```{r}
+predict_gbm <- predict(model_gbm, validation) 
+confusion_gbm <- confusionMatrix(predict_gbm, validation$classe); confusion_gbm
+```
+
+The best model therefore out of the three, is the random forest.
+
+### Prediction on Testing Data Set:
+
+The final thing done in this analysis is predicting the classe values in the test set.  
+
+```{r}
+### Predicting on Test Set
+predict_test <- predict(model_rf, testing); predict_test
+```
+
+
+
+
+
+
