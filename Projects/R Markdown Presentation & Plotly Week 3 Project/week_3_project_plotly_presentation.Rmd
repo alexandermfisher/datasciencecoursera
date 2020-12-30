@@ -1,0 +1,42 @@
+---
+title: "R Markdown Presentation & Plotly Week 3 Project"
+author: "Alexander M Fisher"
+date: "30/12/2020"
+output: ioslides_presentation
+---
+
+
+## Intro to Project:
+
+Create a web page presentation using R Markdown that features a plot created with Plotly. Host your webpage on either GitHub Pages, RPubs, or NeoCities. Your webpage must contain the date that you created the document, and it must contain a plot created with Plotly. We would love to see you show off your creativity! 
+
+Review Criteria - The rubric contains the following two questions:
+
+- Does the web page feature a date and is this date less than two months before the date that you're grading this assignment?
+- Is the web page a presentation and does it feature an interactive plot that appears to have been created with Plotly?
+
+
+## Getting and Preparing Data:
+
+In this project to demonstrate the use of plotly I will redo an exploratory box plot done 
+in a previous assignment using plotly. That is the regression model project in which we explored the relationship between mpg 
+and transmission type from the `mtcars` data set. 
+
+```{r}
+suppressMessages(library(plotly))
+data("mtcars")
+data <- mtcars
+data$am <- factor(data$am, labels = c("auto","manual"))
+data$cyl <- factor(data$cyl)
+print(str(data))
+```
+
+## Plotly Boxplot:
+
+```{r fig.dim=c(6,4)}
+box_plot <- plot_ly(data = data, x=data$am, y=data$mpg, color = data$am, 
+                    type = "box")
+options(warn = -1)
+box_plot
+```
+
