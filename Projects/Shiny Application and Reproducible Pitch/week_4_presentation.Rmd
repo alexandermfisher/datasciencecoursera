@@ -1,0 +1,108 @@
+---
+title: "Week 4 Project: Reproducible Pitch"
+author: "Alexander M Fisher"
+date: "30/12/2020"
+output: ioslides_presentation
+---
+
+
+## Intro to Project:
+<font size="3">
+
+This is the accompanying project pitch (presentation slides) for the shiny app I have created and deployed. Note the shiny app is deployed on the shiny server, and can be found at the following link ADD LINK. The code can be found on my github repository following the link .. ADD LINK. Lets see what is expected of us for this part of the coursework. Below is the description given on the coursera developing data products web-page
+
+OK, you've made your shiny app, now it's time to make your pitch. You get 5 slides (inclusive of the title slide)  to pitch a your app. You're going to create a web page using Slidify or Rstudio Presenter with an html5 slide deck.
+
+Here's what you need
+
+- 5 slides to pitch our idea done in Slidify or Rstudio Presenter
+- Your presentation pushed to github or Rpubs
+- A link to your github or Rpubs presentation pasted into the provided text box
+
+Your presentation must satisfy the following
+
+- It must be done in Slidify or Rstudio Presenter
+- It must be 5 pages
+- It must be hosted on github or Rpubs
+- It must contained some embedded R code that gets run when slidifying the document
+
+</font>
+
+## Project Idea:
+
+<font size="3">
+
+I will implement a linear prediction model using the `mtcars` data set to predict MPG. The application will allow the user to 
+modify the prediction model by altering which variables are used for predictors, as well as the input values of the selected predictors. 
+Lets have a little exploration of the data set so you can have a basic understanding of what the data set is about, before jumping 
+in to the prediction model, plot, and results. To do this I will simply print the `head()` of the data set.
+
+</font>
+
+
+```{r}
+head(mtcars)
+```
+
+## The Shiny Application - ui.R
+
+<font size="3">
+
+To have look at a the full code please visit the github repository. For reference here I have included a snippet of the code used to create the user interface. 
+
+</font>
+
+```{r, eval=FALSE}
+# Define UI for application that draws a histogram
+shinyUI(fluidPage(
+
+        # Application title
+        titlePanel("MPG Predictor Model Generated from mtcars Data Set"),
+
+        # Sidebar with a slider input
+        sidebarLayout(
+                sidebarPanel(
+                        HTML(
+                                paste(
+                                        h5("Thank you for using the app! It offers an interactive means of selecting
+                    some predcitors to generate a linear model as well as providing a prediction for the given inputs you provide."),
+                                        h5("Below you can select to include in addition to the default predictor (which will always be included in the model) \"wt\", either \"qsec\", or \"am\" or both,
+                       where \"wt\": weight, \"qsec\": 1/4 mile time, and \"am\": Transmission (0 = automatic, 1 = manual)"),
+                                        h5("Note only the values corresponding to the selcted predicotrs the model is built with will be used in the prediction.")
+                                )
+                        ),
+                        checkboxInput("include_qsec", "Indclude qsec predictor", value = FALSE),
+                        checkboxInput("include_am", "Indclude am predictor", value = FALSE),
+```
+
+## The Shiny Application - server.R
+
+```{r, eval=FALSE}
+# Define server logic required to create prediction models and subsequent prediction and plots
+shinyServer(function(input, output) {
+    
+    mtcars$am <- factor(mtcars$am)
+    model_1 <- lm(mpg ~ wt, data = mtcars)
+    model_2 <- lm(mpg ~ wt + qsec, data = mtcars)
+    model_3 <- lm(mpg ~ wt + qsec + am, data = mtcars)
+    model_4 <- lm(mpg ~ wt + am, data = mtcars)
+    
+    model_1_pred <- reactive({
+        wt_input <- input$input_wt
+        predict(model_1, newdata = data.frame(wt = wt_input))
+    })
+    
+    model_2_pred <- reactive({
+        wt_input <- input$input_wt
+        qsec_input <- input$input_qsec
+        predict(model_2, newdata = data.frame(wt = wt_input, qsec = qsec_input))
+    })
+```
+
+
+
+
+
+
+
+
