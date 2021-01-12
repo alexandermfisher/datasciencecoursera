@@ -1,6 +1,7 @@
 library(dplyr)
 
 best<-function(state, outcome){
+        # make sure to set cd to where the data folder is.
         data <- read.csv("./data/outcome-of-care-measures.csv", colClasses = "character",header=TRUE)
         df <- as.data.frame(cbind(data[, 2],   # hospital
                                   data[, 7],   # state
