@@ -49,7 +49,7 @@ colnames(data) <- gsub("Gyro", "Gyroscope", colnames(data))
 colnames(data) <- gsub("Mag", "Magnitude", colnames(data))
 
 # make activities and subjects into factors:
-data$activity <- factor(data$activity, levels = activityLabels$V1, labels = activityLabels$V2)
+data$activity <- factor(data$activity, levels = activity_labels$V1, labels = activity_labels$V2)
 data$subject_id <- as.factor(data$subject_id)
 
 # creating independent tidy data set:
