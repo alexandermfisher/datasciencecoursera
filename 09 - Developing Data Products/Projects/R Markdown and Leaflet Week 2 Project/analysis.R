@@ -1,32 +1,15 @@
----
-title: "Week 2 Leaflet Project"
-author: "Alexander M Fisher"
-date: "January 14, 2021"
-output: 
-  html_document:
-    keep_md: false
-    theme: readable
----
+# analysis for R project.
 
-In this project I will create a map with leaflet. It will contain a cumulative sum of new cases as well as
-a cumulative sum of deaths with relation to COVID-19 for several major cities and location in England, UK. The code to generate the map, and the map itself will follow. 
-
-#### Downloading, and Reading Data into R.
-
-```{r}
 # download and read data into R.
 url <- "https://api.coronavirus.data.gov.uk/v2/data?areaType=utla&metric=newCasesByPublishDate&metric=newDeathsByDeathDate&format=csv"
 download.file(url, destfile="uk_covid_data.csv", method="curl")
 data <- read.csv(file.path(getwd(), "uk_covid_data.csv"), header = TRUE)
-```
 
-#### Getting cumulative sum of new cases and new deaths latest entries for each region.
 
-```{r}
 ## Getting cumulative sum of new cases and new deaths latest entries for each region.
 data <- data[!is.na(data$newCasesByPublishDate),]
 data <- data[!is.na(data$newDeathsByDeathDate),]
-suppressPackageStartupMessages(library(dplyr))
+library(dplyr)
 relevant_cols <- c("date","areaName","newCasesByPublishDate","newDeathsByDeathDate")
 data <- data %>% select(c("date","areaName","newCasesByPublishDate","newDeathsByDeathDate")) %>%
         group_by(areaName) %>%
@@ -35,11 +18,7 @@ data <- data %>% select(c("date","areaName","newCasesByPublishDate","newDeathsBy
         filter(row_number()==n()) %>%
         arrange(areaName)
 data <- subset(data, select = c("date","areaName","cumsumnewcase","cumsumnewdeath"))
-```
 
-#### Getting coordinate data for each location:
-
-```{r}
 ## Getting coordinate data 
 coordinate_data_url <- "https://simplemaps.com/static/data/country-cities/gb/gb.csv"
 download.file(coordinate_data_url, destfile="cd_data.csv", method="curl")
@@ -60,11 +39,7 @@ for (city in data$areaName){
                 data<-data[!(data$areaName == city),]
         }
 }
-```
 
-#### Generating Pop up Labels, and Leaflet Map.
-
-```{r}
 data$popup_lables <- rep("No Info.",length(data$date))
 for (i in 1:length(data$areaName)){
         data$popup_lables[i] <- paste(sep = "<br/>", paste("<b>",data$areaName[i],":</b>"),
@@ -77,6 +52,9 @@ library(leaflet)
 data[,c("lat","lng")] %>%  leaflet()  %>%
         addTiles() %>%  
         addMarkers(clusterOptions = markerClusterOptions(), popup = data$popup_lables)
-```
+        #addCircles(weight = 1, radius = sqrt(data$cumsumnewdeath)*500,popup = data$areaName)
+
+
+
 
 
