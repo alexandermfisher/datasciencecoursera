@@ -1,0 +1,13 @@
+name: Week_4_Developing_Data_Products_Shiny_App
+title: Week_4_Developing_Data_Products_Shiny_App
+username:
+account: alexandermf
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 3473231
+bundleId: 4095834
+url: https://alexandermf.shinyapps.io/Week_4_Developing_Data_Products_Shiny_App/
+when: 1610633515.03013
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: README.md|week_4_presentation.html|week_4_presentation.Rmd
