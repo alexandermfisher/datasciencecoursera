@@ -7,14 +7,13 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Reproducible Research - Peer Assessment 2:
-(rename title for rpubs submission to something more approriate and add more detail on analysis in synopsis)
+## Reproducible Research - Peer Assessment 2: Storm Data Analysis:
 
 *Author: Alexander M Fisher*
 
 ### Synopsis:
 
-This is the second project in the data science specialisation course module Reproducible Research. The goal of the anaysis in this porject is to explore the NOAA Storm Database and answer some basic questions about severe weather events. 
+This is the second project in the data science specialisation course module Reproducible Research. The goal of the analysis in this project is to explore the NOAA Storm Database and answer some basic questions about severe weather events. 
 
 The two questions that are of interest are:
 

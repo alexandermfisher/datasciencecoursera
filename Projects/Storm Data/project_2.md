@@ -1,11 +1,17 @@
-## Reproducible Research - Peer Assessment 2:
-(rename title for rpubs submission to something more approriate and add more detail on analysis in synopsis)
+---
+output: 
+  html_document:
+    keep_md: true
+---
+
+
+## Reproducible Research - Peer Assessment 2: Storm Data Analysis:
 
 *Author: Alexander M Fisher*
 
 ### Synopsis:
 
-This is the second project in the data science specialisation course module Reproducible Research. The goal of the anaysis in this porject is to explore the NOAA Storm Database and answer some basic questions about severe weather events. 
+This is the second project in the data science specialisation course module Reproducible Research. The goal of the analysis in this project is to explore the NOAA Storm Database and answer some basic questions about severe weather events. 
 
 The two questions that are of interest are:
 
@@ -258,7 +264,7 @@ That is all for this section. The data is now ready to be plotted in the results
 Now to plot the resulting data tables. In this section ggplot and gripExtra packages have been utilized. In the first plot we will look at 
 th health data table. Each damage type will be plotted on it own set of axis. The plots will be a 
 bar chart with type of event on the x-axis and total number of incidents, i.e. count of 
-fatalities or injuries caused by that specific event for 1996-2011. Please see code chunk for specifics. 
+fatalities or injuries caused by that specific event for 1996-2015. Please see code chunk for specifics. 
 
 
 ```r
@@ -266,7 +272,6 @@ library(ggplot2)
 #### Damage to Population Health PLots:
 fatalities_plot <- ggplot(health_data[health_data$damage_type == "FATALITIES",], aes(x = reorder(EVTYPE,-value), y = value)) +
         geom_col(fill = "blue", alpha = 0.8, size=0.2) +
-        #scale_y_continuous(limit = c(0, 20000)) +
         labs(x="Event Type",y="Number of Fatalities",title="Top 10 Storm Events by Fatalities") +
         theme(plot.title = element_text(hjust = 0.5), text = element_text(size=10), axis.text.x = element_text(angle=40, hjust=1))
 
@@ -278,7 +283,7 @@ injuries_plot <- ggplot(health_data[health_data$damage_type == "INJURIES",], aes
 gridExtra::grid.arrange(fatalities_plot, injuries_plot, nrow = 2)
 ```
 
-![](health_plot.png)<!-- -->
+![](project_2_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
 
 The next plot will use the econ data table. This again will have sub plots, for each type of cost, i.e. propcost, and cropcost. 
 
@@ -287,26 +292,24 @@ The next plot will use the econ data table. This again will have sub plots, for 
 #### Damage to Economic Health PLots:
 propcost_plot <- ggplot(econ_data[econ_data$cost_type == "PROPCOST",], aes(x = reorder(EVTYPE,-value), y = value)) +
         geom_col(fill = "blue", alpha = 0.8, size=0.2) +
-        #scale_y_continuous(labels = scales::scientific) +
         labs(x="Event Type",y="Total Cost (Billion USD)",title="Top 10 Storm Events by Property Costs") +
         theme(plot.title = element_text(hjust = 0.5), text = element_text(size=10), axis.text.x = element_text(angle=40, hjust=1))
 
 cropcost_plot <- ggplot(econ_data[econ_data$cost_type == "CROPCOST",], aes(x = reorder(EVTYPE,-value), y = value)) +
         geom_col(fill = "red", alpha = 0.8, size=0.2) + 
-        #scale_y_continuous(limits = c(0,1.5*10^11), labels = scales::scientific) +
         labs(x="Event Type",y="Total Cost (Billion USD)",title="Top 10 Storm Events by Crop Costs") +
         theme(plot.title = element_text(hjust = 0.5), text = element_text(size=10), axis.text.x = element_text(angle=40, hjust=1))
 
 gridExtra::grid.arrange(propcost_plot, cropcost_plot, nrow = 2)
 ```
 
-![](econ_plot.png)<!-- -->
+![](project_2_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
 
 #### Discussion:
 
 It can be seen that the number of fatalities is approximately an order of magnitude lower than number of injuries. This is reassuring as we expect a lot more injuries be observed compared to fatalities. I have not kept the axis limits the same on both graphs which doesn't make that necessarily apparent at first glance but this point should be noted. By far the most damaging storm event with regards to population health is Tornado. It is second most damaging in fatalities and quite substantially the most damaging when looking at injuries. Excessive heat is top three for both damage types, and should be noted. 
 
-With regards to economic damage, it is quite clear that property damage is far more costly than crop damage. This is also again to be expected. ALso note that again the axis limits are not the same and make in initial glance the impacts to be of similar magnitude. Crop cost in this instance is an order of magnitude lower than property. Drought and floods are the two most damaging to crops. Floods, Hurricane/Typhoon and storm surges are top three damaging to property.  Overall flood is the most damaging=ng and the one event that may be wise to prepare for and put in measures to reduce flooding impacts on property. Please have a look at how the data has been recorder and when certain events were regularly updated and accurately, as the data collection may have unexpected or biasing effect in the results. Overall however, this is a good start to the analysis of this data set and the results seem sensible.
+With regards to economic damage, it is quite clear that property damage is far more costly than crop damage. This is also again to be expected. Also note that again the axis limits are not the same and make in initial glance the impacts to be of similar magnitude. Crop cost in this instance is an order of magnitude lower than property. Drought and floods are the two most damaging to crops. Floods, Hurricane/Typhoon and storm surges are top three damaging to property.  Overall flood is the most damaging=ng and the one event that may be wise to prepare for and put in measures to reduce flooding impacts on property. Please have a look at how the data has been recorder and when certain events were regularly updated and accurately, as the data collection may have unexpected or biasing effect in the results. Overall however, this is a good start to the analysis of this data set and the results seem sensible.
 
 
 *************
