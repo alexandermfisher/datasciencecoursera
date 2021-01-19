@@ -4,9 +4,7 @@
 
 **********
  
-This is the week 4 course project for the Developing Data Products module that is a part of the Coursera Data Science Specialization run by JHU. It 
-icludes creating a shiny app and deploying it on the shiny sever. In addition I have made a presentation which has been published on Rpubs. 
-In this repository the sevrer and ui R files ave been included that create the shiny app. The slides are also included. 
+This is the week 4 course project for the Developing Data Products module that is a part of the Coursera Data Science Specialization run by JHU. It includes creating a shiny app and deploying it on the shiny sever. In addition I have made a presentation which has been published on Rpubs. In this repository the sever and ui R files ave been included that create the shiny app. The slides are also included. 
 
 Links:
 

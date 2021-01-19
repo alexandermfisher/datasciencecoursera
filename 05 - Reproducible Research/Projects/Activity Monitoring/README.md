@@ -4,7 +4,7 @@
 
  **********
  
-This is the first course project for the Reproducible Research module a part of the Coursera Data Science Specialization. Inclued in this repository is the final project report PA1_template in Rmd, md and html formats. The accompanying png files are in PA1_template_files. In addtion the data files and a R script with the analysis is included. 
+This is the first course project for the Reproducible Research module a part of the Coursera Data Science Specialization. Included in this repository is the final project report PA1_template in Rmd, and md formats. In addition the data files and a R script with the analysis is included. 
 
 **********
 
@@ -21,8 +21,6 @@ This is the first course project for the Reproducible Research module a part of 
 - `activity.csv`: data set
 - `PA1_template.Rmd`: project report in Rmd
 - `PA1_template.md`: project report in resulting md format.
-- `PA1_template.html`: project report in final html format ready for publishing.
-- `PA1_template_files`: folder containing png files produced in analysis for md file.
 - `workspace.R`: all of the code used in report stored in single r script. Includes loading data into R, as well as data processing and results.
 
 
