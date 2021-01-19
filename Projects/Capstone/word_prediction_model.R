@@ -76,7 +76,7 @@ format_table <- function(table, print_full_table = FALSE, remove_profanity = FAL
         return(table_formatted)
 }
 
-#remove_profanity_func("this_fuck_you_bitch", bad_words)
+#remove_profanity_func("this_fuck", bad_words)
 #format_table(get_next_words_table("fuck this"),print_full_table = TRUE, remove_profanity = TRUE)
 
 

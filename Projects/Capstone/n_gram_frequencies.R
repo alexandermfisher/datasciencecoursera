@@ -24,7 +24,6 @@ data <- pivot_longer(data, cols=1:3, names_to = "source_type", values_to = "text
 data$source_type <- as.factor(data$source_type)
 
 # create data_frame of text examples/inputs/documents
-#data <- as.data.frame(cbind(text1,text2))
 data <- replace_contraction(data$text, sent.cap = FALSE)
 data <- replace_ordinal(data)
 data <- replace_number(data)
