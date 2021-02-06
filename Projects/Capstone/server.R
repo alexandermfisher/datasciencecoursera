@@ -1,6 +1,6 @@
 library(shiny)
 
-setwd("~/Documents/online_courses/data_science_specialisation/Projects/Capstone")
+setwd("~/Documents/online_courses/Data Science Specialisation/datasciencecoursera/Projects/Capstone")
 source("word_prediction_model.R")
 
 shinyServer(

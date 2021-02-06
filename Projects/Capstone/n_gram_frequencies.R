@@ -8,8 +8,9 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(quanteda)
+library(qdap)
 
-setwd("~/Documents/online_courses/data_science_specialisation/Projects/Capstone")
+setwd("~/Documents/online_courses/Data Science Specialisation/datasciencecoursera/Projects/Capstone")
 
 #Read in the appropriate data
 blogs <- readLines("./data/en_US.blogs.txt", encoding = "UTF-8", skipNul = TRUE, warn = TRUE)
