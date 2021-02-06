@@ -1,0 +1,183 @@
+---
+title: "Coursera Capstone Project - Milestone Report"
+author: "Alexander M Fisher"
+date: "January 05, 2021"
+output: 
+  html_document:
+    keep_md: false
+    theme: readable
+---
+
+#### Introduction:  
+
+This is the milestone report for the capstone project which is the final part in Coursera's Data Science Specialisation. 
+The goal of the project is to demonstrate that the data set has been downloaded and an initial exploratory analysis has been completed. It 
+will also detail the plans and steps in which I will take to create and eventually deploy a word prediction app. To start things off lets get the data. 
+The data set that is used is provided by swiftkey. It contains a txt files that have blog, news, and twitter entries. The data can be downloaded from the following link. 
+
+- [SwiftKey Data Set](https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip)
+
+I will also now import any packages that will be used. 
+
+```{r, message = FALSE}
+library(ggplot2)
+library(NLP)
+library(tm)
+library(qdap)
+library(RWeka)
+library(data.table)
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(quanteda)
+library(kableExtra)
+```
+
+*************
+
+#### Loading Data:
+
+In my current working directory I have a directory named `data` that contains, the three relevant files which are, `en_US.blogs.txt`, `en_US.news.txt`, and `en_US.twitter.txt`. If this is not the case for you please make sure you download the data from the given link in the introduction and place the relevant files in a directory named `data`. From here I will perform a very basic analysis on the files using the unix command `wc`. This will enable me to quickly 
+understand some basic details about the files including number of rows, number of words, and number of characters in each text file. 
+
+The command I ran in the command prompt is:
+
+- `% wc en_US.blogs.txt en_US.news.txt en_US.twitter.txt >> file_info.txt`
+
+Then load the data (i.e. file_info.txt) into R and display in table. 
+
+```{r}
+setwd("~/Documents/online_courses/Data Science Specialisation/datasciencecoursera/Projects/Capstone")
+file_info <- read.table("./data/file_info.txt")
+colnames(file_info) <- c("Num. Lines", "Num. Words", "Num. Chars", "File")
+file_info <- file_info[-4,c(4,1,2,3)]
+kable(file_info) %>% kable_styling(bootstrap_options = c("striped", "hover"))
+```
+
+As we can tell the files are quite large and to decrease computation time I am going to sample the data.
+
+```{r, cache=TRUE}
+#Read in the appropriate data
+blogs <- readLines("./data/en_US.blogs.txt", encoding = "UTF-8", skipNul = TRUE, warn = TRUE)
+news <- readLines("./data/en_US.news.txt", encoding="UTF-8", skipNul = TRUE, warn = TRUE)
+twitter <- readLines("./data/en_US.twitter.txt",encoding="UTF-8", skipNul = TRUE, warn = TRUE)
+
+blogs_samp <- sample(blogs, 1000)
+news_samp <- sample(news, 1000)
+twitter_samp <- sample(twitter, 1000)
+
+data <-as.data.frame(cbind(blogs_samp,news_samp,twitter_samp))
+data <- pivot_longer(data, cols=1:3, names_to = "source_type", values_to = "text")
+data$source_type <- as.factor(data$source_type)
+head(data,5)
+```
+
+#### Preprocessing the Data:
+
+Now the data needs to be standardized/normalized to prepare for tokenisation. To do this the `qdap` and `quanteda` packages have been utilized.
+This makes a lot of the transformations very simple, and reasonable quick. All of the standard transformations have been done, including replacing contractions, ordinals, abbreviations, etc. In addition multiple full stops (e.g .....) more frequent in twitter entries and have been replaced with a single full stop. The entries are then tokenised into sentences. That is to say each sentence is a row in the data frame. From here the data is in a standard format with most punctuation removed, and ready to be tokenised into words in the next section. 
+
+
+```{r, cache=TRUE}
+# create data_frame of text examples/inputs/documents
+data <- replace_contraction(data$text, sent.cap = FALSE)
+data <- replace_ordinal(data)
+data <- replace_number(data)
+data <- replace_abbreviation(data)
+data <- replace_symbol(data)
+data <- gsub(pattern = "[[:space:]]*\\.+", replacement = "\\.", data)
+
+data.tokens <- tokens(data, what = "sentence", remove_punct = FALSE, remove_numbers = TRUE,remove_symbols = TRUE, split_hyphens = TRUE)
+data.tokens <- tokens_tolower(data.tokens)
+data_sentances <- as.character(data.tokens)
+data_sentances <- gsub(pattern = "\\.", replacement = "", data_sentances)
+data_sentances <- gsub(pattern = "[^[:alnum:][:space:]'`]", replacement = "", data_sentances)
+```
+
+
+
+#### N-Gram: Tokenisation
+
+In this section I will take the normalized data and tokenise further into words. In this section I will cover unigram, bigram, and trigrams. 
+The `quanteda` packaged will be utilized to tokenise the data, then we will make some plots and see some of the most common words, and phrases in our corpus. 
+
+##### Unigram:
+
+```{r}
+data.tokens <- tokens(data_sentances, what = "word")
+data.tokens.dfm <- dfm(data.tokens)
+unigram_freq <- textstat_frequency(data.tokens.dfm)[,1:2]
+names(unigram_freq)[1] <- "text"
+
+# plotting to 20 words 
+plot <- ggplot(head(unigram_freq,20), aes(x= reorder(text,-frequency), y=frequency)) +
+        #geom_col(fill = "blue", alpha = 0.8, size=0.2)
+        geom_bar(stat="Identity", fill= "steelblue") +
+        labs(x="",y="Frequency",title="Top 20 Unigrams") +
+        theme(plot.title = element_text(hjust = 0.5), text = element_text(size=10), axis.text.x = element_text(angle=40, hjust=1))
+print(plot)
+```
+
+##### Bigram:
+
+```{r}
+bigram.tokens <- tokens_ngrams(data.tokens, n = 2)
+bigram.dfm <- dfm(bigram.tokens)
+bigram_freq <- textstat_frequency(bigram.dfm)[,1:2]
+names(bigram_freq)[1] <- "text"
+
+# plotting top 20 bigrmas
+plot <- ggplot(head(bigram_freq,20), aes(x= reorder(text,-frequency), y=frequency)) +
+        #geom_col(fill = "blue", alpha = 0.8, size=0.2)
+        geom_bar(stat="Identity", fill= "steelblue") +
+        labs(x="",y="Frequency",title="Top 20 Bigrams") +
+        theme(plot.title = element_text(hjust = 0.5), text = element_text(size=10), axis.text.x = element_text(angle=40, hjust=1))
+print(plot)
+```
+
+##### Trigram:
+
+```{r}
+trigram.tokens <- tokens_ngrams(data.tokens, n = 3)
+trigram.dfm <- dfm(trigram.tokens)
+trigram_freq <- textstat_frequency(trigram.dfm)[,1:2]
+names(trigram_freq)[1] <- "text"
+
+
+# plotting top 20 trigrams
+plot <- ggplot(head(trigram_freq,20), aes(x= reorder(text,-frequency), y=frequency)) +
+        #geom_col(fill = "blue", alpha = 0.8, size=0.2)
+        geom_bar(stat="Identity", fill= "steelblue") +
+        labs(x="",y="Frequency",title="Top 20 Trigrams") +
+        theme(plot.title = element_text(hjust = 0.5), text = element_text(size=10), axis.text.x = element_text(angle=40, hjust=1))
+print(plot)
+```
+
+#### Next Steps
+
+This concludes the analysis that will be completed in this report. However, it is quite breif and so there remains quiet a 
+few things that can be done to further understand this data set before forming a model. I will investigate at what given unigram what percentage of the corpus is covered. I will also look morep deeply into the sample sizes and what represents the corpus the best without going too large. The 
+word prediction model also has to be formed. The model will consist of pre-generated frequency tables, like seen in the above n-gram analysis. When a phrase is entered it will be checke against a quadgram table, then if no match is found a trigram table, etc. This is known as a `back-off word prediction model`. I will also need to consider adding a profanity blocker, and in general the graphical user interface for the app. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

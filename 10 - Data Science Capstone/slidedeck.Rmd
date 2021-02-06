@@ -1,0 +1,105 @@
+---
+title: "Data Science Capstone: Slide Deck"
+author: "Alexander M Fisher"
+date: "Febuary 05 2021"
+output: ioslides_presentation
+---
+
+
+## Project Intro:
+<font size="3">
+
+In this final capstone project a word prediction algorithm has been developed and deployed on the shiny server. The data set has been provided by SwiftKey. The aim of this project is to use tecjniques taught over the course to perform some exploratory analysis on the data, as well as 
+normalise and tokenise the data. From here a model can be implemnted. For a quick understanding of the steps taken in this project see the list below. 
+
+- Download data and load into R.
+- sampe data set
+- normalise data by removing punctuation, ect. 
+- tokenise data and create word frequency tables. 
+- create word prediction model i.e. algororithm which refrences word frequency tables. 
+- develope a shiny app and implement model in app and deploy app. 
+
+
+</font>
+
+## Generating N-grams:
+
+<font size="3">
+
+After the data was loaded and sampled, the data was normalized. This step included, removing punctuation 
+and numbers, contractions, making everything lowercase, etc. This part relied on the `qdap` and `quanteda` packages heavily. From 
+the data was tokenised and word frequency tables were generated. This is what the model algorithm then references. All of this 
+analysis is done in `n_gram_frequencies.R`. A snippet of the analysis is demonstrated here.
+
+
+
+```{r, eval=FALSE}
+# create data_frame of text examples/inputs/documents
+data <- replace_contraction(data$text, sent.cap = FALSE)
+data <- replace_ordinal(data)
+data <- replace_number(data)
+data <- replace_abbreviation(data)
+data <- replace_symbol(data)
+data <- gsub(pattern = "[[:space:]]*\\.+", replacement = "\\.", data)
+
+data.tokens <- tokens(data, what = "sentence", remove_punct = FALSE, 
+                      remove_numbers = TRUE,remove_symbols = TRUE, split_hyphens = TRUE)
+data.tokens <- tokens_tolower(data.tokens)
+data_sentances <- as.character(data.tokens)
+data_sentances <- gsub(pattern = "\\.", replacement = "", data_sentances)
+data_sentances <- gsub(pattern = "[^[:alnum:][:space:]'`]", 
+                       replacement = "", data_sentances)
+```
+</font>
+
+
+## Word Prediction Algorithm:
+
+<font size="3">
+
+The word prediction algorithm is a basic implementation of a back off model. The input is 
+given and then checked against the quadgram word frequency table for a match. If no math is 
+found then the trigram table is searched and so on. The most frequently occurring match is then returned
+as the prediction. The idea is quite simple and doesn't have any additional features or 
+considerations in the model. A profanity blocker and optional table output has been added to the app however. All of this 
+analysis/work is in the `word_prediction_model.R`. See below a snippet of the code. 
+
+```{r, eval=FALSE}
+check_for_valid_input <- function(input) return(grepl("^[a-zA-Z ]+$",input))
+
+get_next_words_table <- function(sentance){
+        phrase <- unlist(strsplit(sentance,' '))
+        len_phrase <- length(phrase)
+        return_phrases <- data.frame(text=character(),frequency=integer(),rel_prop=integer(),table=character(),stringsAsFactors=FALSE)
+        if (len_phrase >= 3){
+                phrase <- tail(phrase,3)
+                phrase <- paste(phrase[1],phrase[2],phrase[3], sep='_')
+                phrase <- paste0("^", phrase, "_")
+                ...
+```
+
+</font>
+
+
+## Final Notes:
+
+So from here the app is developed relying on the above mentioned scripts for the model aspect and the two files listed below for the 
+implementation of the model and user interface aspects. Note instructions are provided with the app, however, it is quite simple, and only requires 
+the user to type a phrase and hit the submit button. There are two optional buttons for control over profanity and output as well. 
+
+- server.R
+- ui.R
+
+For the code and more information please visit my github repo [here](https://github.com/alexandermfisher/datasciencecoursera)
+<font size="3">
+
+
+
+
+
+
+
+
+
+
+
